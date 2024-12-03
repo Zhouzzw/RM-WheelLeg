@@ -4,11 +4,11 @@
 #include "main.h"
 
 /*===| 底盘电机PID参数 |===*/
-#define Chassis_PID_Kp              5000.0f
-#define Chassis_PID_Ki              500.0f
+#define Chassis_PID_Kp              3000.0f
+#define Chassis_PID_Ki              0.0f
 #define Chassis_PID_Kd              0.0f
-#define Chassis_PID_I_Output_Max    1500.0f
-#define Chassis_PID_Output_Max      20000.0f
+#define Chassis_PID_I_Output_Max    0.0f
+#define Chassis_PID_Output_Max      16384.0f
 
 #define Energy_PID_Kp								10.0f
 #define Energy_PID_Ki								0.0f

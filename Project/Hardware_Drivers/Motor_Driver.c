@@ -11,7 +11,7 @@
 #include "CRC8_CRC16.h"
 
 /*===| 电机数据结构体 |===*/
-Motor_Data_StructTypeDef Motor_Data_Struct[10];
+Motor_Data_StructTypeDef Motor_Data_Struct[10] = {0};
 
 
 /**

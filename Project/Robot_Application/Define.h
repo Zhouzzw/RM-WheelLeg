@@ -52,8 +52,8 @@
     #define Chassis_Motor_Send_CAN_ID           0x200    //底盘电机CAN发送ID
     #define Chassis_Motor1_Feedback_CAN_ID      0x201    //底盘电机1CAN反馈ID
     #define Chassis_Motor2_Feedback_CAN_ID      0x202    //底盘电机2CAN反馈ID
-    #define Chassis_Motor3_Feedback_CAN_ID      0x204    //底盘电机3CAN反馈ID
-    #define Chassis_Motor4_Feedback_CAN_ID      0x203    //底盘电机4CAN反馈ID
+    #define Chassis_Motor3_Feedback_CAN_ID      0x203    //底盘电机3CAN反馈ID
+    #define Chassis_Motor4_Feedback_CAN_ID      0x204    //底盘电机4CAN反馈ID
     
 /*===| 云台电机通信相关定义 |===*/
     #define Gimbal_Pitch_CAN                    hfdcan2    //Pitch_使用的CAN
@@ -102,7 +102,7 @@
    
         
 /*===| 云台相关参数定义 |===*/  
-    #define Gimbal_Median_Yaw                   5355     //云台朝前时Yaw电机的编码值
+    #define Gimbal_Median_Yaw                   0     //云台朝前时Yaw电机的编码值
     #define Gimbal_Median_Pitch                 0        //云台水平时Pitch电机的角度
     
 //    #define Gimbal_Pitch_Limit_Up               35.0f   //Pitch最大仰角

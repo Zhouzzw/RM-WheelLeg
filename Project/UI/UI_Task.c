@@ -4,7 +4,6 @@
 #include "Referee_Unpack.h"
 
 int UI_SELF_ID;
-#ifdef Chassis_Board
 
 
 UI_State_StructTypedef UI_State;
@@ -98,4 +97,3 @@ void UI_Task(void const * argument)
         
     }	
 }
-#endif

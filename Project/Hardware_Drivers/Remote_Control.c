@@ -8,6 +8,7 @@
 #include "Remote_Control.h"
 #include "RoboControl.h"
 
+
 /*===| 遥控器数据结构体 |===*/
 Remote_Control_StructTypeDef Remote_Control_Struct;
 Remote_Control_StructTypeDef Remote_Control_Last_Struct;
@@ -89,11 +90,11 @@ void Remote_Control_GetData(uint8_t *DataBuff)
         Remote_Control_Struct.Keyboard_V       = !!(DataBuff[15] & 0x40);
         Remote_Control_Struct.Keyboard_B       = !!(DataBuff[15] & 0x80);
         
-       if(Remote_Control_Struct.RC_Right_X > -0.1f && Remote_Control_Struct.RC_Right_X < 0.1f) Remote_Control_Struct.RC_Right_X = 0;
-       if(Remote_Control_Struct.RC_Right_Y > -0.1f && Remote_Control_Struct.RC_Right_Y < 0.1f) Remote_Control_Struct.RC_Right_Y = 0;
-       if(Remote_Control_Struct.RC_Left_X  > -0.1f && Remote_Control_Struct.RC_Left_X  < 0.1f) Remote_Control_Struct.RC_Left_X  = 0;
-       if(Remote_Control_Struct.RC_Left_Y  > -0.1f && Remote_Control_Struct.RC_Left_Y  < 0.1f) Remote_Control_Struct.RC_Left_Y  = 0;
-       if(Remote_Control_Struct.RC_Side    > -0.1f && Remote_Control_Struct.RC_Side    < 0.1f) Remote_Control_Struct.RC_Side    = 0;
+        if(Remote_Control_Struct.RC_Right_X > -0.2f && Remote_Control_Struct.RC_Right_X  < 0.2f ) Remote_Control_Struct.RC_Right_X  = 0;
+        if(Remote_Control_Struct.RC_Right_Y > -0.2f && Remote_Control_Struct.RC_Right_Y  < 0.2f ) Remote_Control_Struct.RC_Right_Y  = 0;
+        if(Remote_Control_Struct.RC_Left_X  > -0.2f && Remote_Control_Struct.RC_Left_X   < 0.2f ) Remote_Control_Struct.RC_Left_X   = 0;
+        if(Remote_Control_Struct.RC_Left_Y  > -0.2f && Remote_Control_Struct.RC_Left_Y   < 0.2f ) Remote_Control_Struct.RC_Left_Y   = 0;
+        if(Remote_Control_Struct.RC_Side    > -0.2f && Remote_Control_Struct.RC_Side     < 0.2f ) Remote_Control_Struct.RC_Side     = 0;
     }                                                                                                                         
 
     Remote_Control_Struct.If_Remote_Data_New = 1;

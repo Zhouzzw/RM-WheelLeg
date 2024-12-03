@@ -134,9 +134,6 @@ int main(void)
         /*===| 等待陀螺仪校准 |===*/
         while (BMI088_init(IMU_SPI, 0) != BMI088_NO_ERROR);
         
-        /*===| 激光器启动 |===*/
-        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);   __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, 50);  
-        
         /*===| 通信初始化 |===*/
         CAN_Init();                                             //CAN初始化 
         USART_Init();                                           //串口初始化

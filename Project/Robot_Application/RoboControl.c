@@ -11,6 +11,7 @@
 #include "RoboControl.h"
 #include "INS.h"
 #include "Buzzer.h"
+#include "Remote_Control.h"
 
 /*===| 机器人整体状态数据结构体 |===*/
 RoboControl_StructTypeDef RoboControl_Struct;
@@ -18,7 +19,7 @@ RoboControl_StructTypeDef RoboControl_Struct;
 /*===| 计算Wz的PID结构体 |===*/
 PID_Struct_TypeDef RoboWz_PID_Struct;
 
-void RoboControl_Task(void *argument)
+void Robo_Task(void *argument)
 {
     /*===| Yaw参数初始化 |===*/
     RoboControl_Struct.Robo_Target_Yaw = 0;

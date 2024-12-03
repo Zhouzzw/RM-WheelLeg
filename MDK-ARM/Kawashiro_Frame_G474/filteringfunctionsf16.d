@@ -1,0 +1,27 @@
+./kawashiro_frame_g474/filteringfunctionsf16.o: \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\FilteringFunctionsF16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_fir_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\filtering_functions_f16.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math_types_f16.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math_types.h \
+  ..\Drivers\CMSIS\Include\cmsis_compiler.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdint.h \
+  ..\Drivers\CMSIS\Include\cmsis_armclang.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\string.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\math.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\float.h \
+  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\limits.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math_memory.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\none.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\utils.h \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_fir_init_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_df1_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_df1_init_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_df2T_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_df2T_init_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_stereo_df2T_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_biquad_cascade_stereo_df2T_init_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_correlate_f16.c \
+  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Source\FilteringFunctions\arm_levinson_durbin_f16.c

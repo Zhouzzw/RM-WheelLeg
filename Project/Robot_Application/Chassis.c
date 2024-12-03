@@ -7,6 +7,7 @@
 #include "Chassis.h"
 #include "RoboControl.h"
 #include "Power_Limit.h"
+#include "Referee_Unpack.h"
 
 /*===| 底盘控制数据结构体 |===*/
 Chassis_Control_StructTypeDef Chassis_Control_Struct;
@@ -59,10 +60,10 @@ void Chassis_Task(void *argument)
         Chassis_Control_Struct.Odometer_Angle += Self_Wz * Dt * (180.0f / PI);
             
         /*===| 运动学解算[麦轮] |===*/
-        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor1_ID] = ( Chassis_Control_Struct.Chassis_Vy + Chassis_Control_Struct.Chassis_Vx) + (Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
-        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor2_ID] = (-Chassis_Control_Struct.Chassis_Vy + Chassis_Control_Struct.Chassis_Vx) + (Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
-        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor3_ID] = (-Chassis_Control_Struct.Chassis_Vy - Chassis_Control_Struct.Chassis_Vx) + (Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
-        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor4_ID] = ( Chassis_Control_Struct.Chassis_Vy - Chassis_Control_Struct.Chassis_Vx) + (Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
+        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor1_ID] = (+Chassis_Control_Struct.Chassis_Vy + Chassis_Control_Struct.Chassis_Vx) + 0*(Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
+        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor2_ID] = (-Chassis_Control_Struct.Chassis_Vy + Chassis_Control_Struct.Chassis_Vx) + 0*(Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
+        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor3_ID] = (+Chassis_Control_Struct.Chassis_Vy - Chassis_Control_Struct.Chassis_Vx) + 0*(Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
+        Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor4_ID] = (-Chassis_Control_Struct.Chassis_Vy - Chassis_Control_Struct.Chassis_Vx) + 0*(Chassis_A_Distance + Chassis_B_Distance) * Chassis_Control_Struct.Chassis_Wz;
         
         /*===| PID计算得到每个电机的电流大小 |===*/
         PID_Position_Calculate(&Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor1_ID], Chassis_Control_Struct.MotorID_SpeedSet[Chassis_Motor1_ID], Motor_Data_Struct[Chassis_Motor1_ID].SpeedRPM * Chassis_RPM_to_m_s);
@@ -85,8 +86,8 @@ void Chassis_Task(void *argument)
             Motor_DJI_SendCurrent(&Chassis_Motor_CAN, Chassis_Motor_Send_CAN_ID,    
                                   Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor1_ID].Output,
                                   Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor2_ID].Output,
-                                  Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor4_ID].Output,
-                                  Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor3_ID].Output);
+                                  Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor3_ID].Output,
+                                  Chassis_Control_Struct.MotorID_PID_Struct[Chassis_Motor4_ID].Output);
         }
         else 
         {

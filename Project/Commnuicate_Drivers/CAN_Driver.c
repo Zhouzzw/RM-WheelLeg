@@ -29,7 +29,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         else if (hfdcan == &Shoot_Fric_CAN      && CAN_RX_ID == Shoot_Fric_Middle_Feedback_CAN_ID)  Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Shoot_Fric_Middle_ID]);
 
         /*===| 底盘电机数据 |===*/
-        if      (hfdcan == &Chassis_Motor_CAN   && CAN_RX_ID == Chassis_Motor1_Feedback_CAN_ID)   Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Chassis_Motor1_ID]);
+        else if (hfdcan == &Chassis_Motor_CAN   && CAN_RX_ID == Chassis_Motor1_Feedback_CAN_ID)   Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Chassis_Motor1_ID]);
         else if (hfdcan == &Chassis_Motor_CAN   && CAN_RX_ID == Chassis_Motor2_Feedback_CAN_ID)   Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Chassis_Motor2_ID]);
         else if (hfdcan == &Chassis_Motor_CAN   && CAN_RX_ID == Chassis_Motor3_Feedback_CAN_ID)   Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Chassis_Motor3_ID]);
         else if (hfdcan == &Chassis_Motor_CAN   && CAN_RX_ID == Chassis_Motor4_Feedback_CAN_ID)   Motor_DJI_Storage_Data(CAN_RX_Data, &Motor_Data_Struct[Chassis_Motor4_ID]);

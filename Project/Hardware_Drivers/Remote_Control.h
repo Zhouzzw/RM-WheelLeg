@@ -2,7 +2,6 @@
 #define __Remote_Control__
 
 #include "main.h"
-#include "usart.h"
 #include "Referee_Unpack.h"
 
 /** 《遥控器信息图》
