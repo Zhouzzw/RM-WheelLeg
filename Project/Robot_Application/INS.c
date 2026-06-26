@@ -24,9 +24,10 @@
 #include "BMI088driver.h"
 #include "QuaternionEKF.h"
 
-INS_Data_StructTypedef INS_Data;
+INS_Data_StructTypedef INS_Data_Gimbal = {0};
+INS_Data_StructTypedef INS_Data_Self = {0};
 
-INS_t INS;
+extern INS_t INS;
 IMU_Param_t IMU_Param;
 
 PID_Struct_TypeDef TempCtrl_PID_Struct;
@@ -62,11 +63,44 @@ void INS_Init(void)
     INS.AccelLPF = 0.0085;
 }
 
+uint16_t INS_Data_Ticker;
+void INS_Get_Data_Call_Back(uint8_t *Data)
+{
+    INS_Data_Gimbal.If_INS_Init = 1;
+    INS_Data_Ticker = 0;
+    
+    INS_Data_Gimbal.Roll = ((int16_t)(Data[0] << 8) | (int16_t)Data[1]) * 180.0f / 32768.0f;
+    INS_Data_Gimbal.Pitch = ((int16_t)(Data[2] << 8) | (int16_t)Data[3]) * 180.0f / 32768.0f;
+    INS_Data_Gimbal.Yaw = ((int16_t)(Data[4] << 8) | (int16_t)Data[5]) * 180.0f / 32768.0f;
+    
+    if(INS_Data_Gimbal.Yaw - INS_Data_Gimbal.Last_Yaw > 180.0f) INS_Data_Gimbal.Yaw_Round--;
+    if(INS_Data_Gimbal.Yaw - INS_Data_Gimbal.Last_Yaw < -180.0f) INS_Data_Gimbal.Yaw_Round++;
+    
+    INS_Data_Gimbal.YawTotalAngle = INS_Data_Gimbal.Yaw_Round * 360.0f + INS_Data_Gimbal.Yaw;
+    INS_Data_Gimbal.Last_Yaw = INS_Data_Gimbal.Yaw;
+}
+
+void C_IMU_Reset(void)
+{
+    CAN_Send_Data(&IMU_CAN, 0x44, NULL);
+    MX_FDCAN2_Init();
+    CAN_Init();
+}
+
+
 void INS_Task(void)
 {
     INS_Init();
+    INS_Data_Self.If_INS_Init = 1;
     for(;;)
     {
+        INS_Data_Ticker++;
+       
+        if(INS_Data_Ticker >= 100) INS_Data_Gimbal.If_INS_Init = 0;
+        if(INS_Data_Ticker >= 200) INS_Data_Ticker = 100;
+        if(INS_Data_Ticker == 199) C_IMU_Reset();
+        
+        
         const float gravity[3] = {0, 0, 9.81f};
         dt = DWT_GetDeltaT(&INS_DWT_Count);
         t += dt;
@@ -76,12 +110,24 @@ void INS_Task(void)
         // ins update
         BMI088_Read(&BMI088);
 
-        INS.Accel[0] = BMI088.Accel[X];
-        INS.Accel[1] = BMI088.Accel[Y];
-        INS.Accel[2] = BMI088.Accel[Z];
-        INS.Gyro[0] = BMI088.Gyro[X];
-        INS.Gyro[1] = BMI088.Gyro[Y];
-        INS.Gyro[2] = BMI088.Gyro[Z];
+        // -------------- MOUNTING ROTATION ADJUSTMENT --------------
+        // 主控板现在相对于原来的位置做了：先绕 Z (yaw) 正方向 +90°，再绕 X (roll) 旋转 +180°。
+        // 组合矩阵计算后，传感器坐标到机体系（原绝对坐标）映射为：
+        //    xb' = -yb_sensor
+        //    yb' = -xb_sensor
+        //    zb' = -zb_sensor
+        // 因此对原始传感器读数做如下变换以保持原绝对坐标不变。
+        float rawAccel[3] = {BMI088.Accel[X], BMI088.Accel[Y], BMI088.Accel[Z]};
+        float rawGyro[3]  = {BMI088.Gyro[X],  BMI088.Gyro[Y],  BMI088.Gyro[Z]};
+
+        INS.Accel[0] = -rawAccel[1]; // X_body = -Y_sensor
+        INS.Accel[1] = -rawAccel[0]; // Y_body = -X_sensor
+        INS.Accel[2] = -rawAccel[2]; // Z_body = -Z_sensor
+
+        INS.Gyro[0]  = -rawGyro[1];  // gyro X
+        INS.Gyro[1]  = -rawGyro[0];  // gyro Y
+        INS.Gyro[2]  = -rawGyro[2];  // gyro Z
+        // -------------- end mounting adjustment -------------------
 
         // demo function,用于修正安装误差,可以不管,本demo暂时没用
         IMU_Param_Correction(&IMU_Param, INS.Gyro, INS.Accel);
@@ -115,21 +161,21 @@ void INS_Task(void)
         INS.Roll = QEKF_INS.Roll;
         INS.YawTotalAngle = QEKF_INS.YawTotalAngle;
                
-        if(INS.Yaw - INS.Last_Yaw > 180.0f) INS_Data.Yaw_Round--;
-        if(INS.Yaw - INS.Last_Yaw < -180.0f) INS_Data.Yaw_Round++;
+        if(INS.Yaw - INS.Last_Yaw > 180.0f) INS_Data_Self.Yaw_Round--;
+        if(INS.Yaw - INS.Last_Yaw < -180.0f) INS_Data_Self.Yaw_Round++;
         
-        memcpy(INS_Data.Acc, INS.Accel, 12);
-        memcpy(INS_Data.Gyro, INS.Gyro, 12);
+        memcpy(INS_Data_Self.Acc, INS.Accel, 12);
+        memcpy(INS_Data_Self.Gyro, INS.Gyro, 12);
         
-        INS_Data.Yaw = INS.Yaw;
-        INS_Data.Pitch = INS.Pitch;
-        INS_Data.Roll = INS.Roll;
-        INS_Data.Yaw_Speed= INS.Gyro[Z];
-        INS_Data.YawTotalAngle = INS_Data.Yaw_Round * 360.0f + INS.Yaw;
+        INS_Data_Self.Yaw = INS.Yaw;
+        INS_Data_Self.Roll = INS.Roll;
+        INS_Data_Self.Pitch = - INS.Pitch;
+        INS_Data_Self.Yaw_Speed = INS.Gyro[Z];
+        INS_Data_Self.YawTotalAngle = INS_Data_Self.Yaw_Round * 360.0f + INS.Yaw;
         
         INS.Last_Yaw = INS.Yaw;
         
-        osDelay(1);
+        osDelay(2);
     }
 }
 
@@ -311,3 +357,4 @@ void EularAngleToQuaternion(float Yaw, float Pitch, float Roll, float *q)
     q[2] = sinPitch * cosRoll * sinYaw + cosPitch * sinRoll * cosYaw;
     q[3] = cosPitch * cosRoll * sinYaw - sinPitch * sinRoll * cosYaw;
 }
+

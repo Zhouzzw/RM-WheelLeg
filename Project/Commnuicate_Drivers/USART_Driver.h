@@ -5,6 +5,8 @@
 
 void USART_Init(void);
 
+void UART4_Printf(const char *fmt,...);
+void UART5_Printf(const char *fmt,...);
 
 #endif
 

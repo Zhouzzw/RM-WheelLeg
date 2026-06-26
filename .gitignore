@@ -1,0 +1,50 @@
+# ============ Keil MDK 编译产物 ============
+MDK-ARM/Output/
+MDK-ARM/*.crf
+MDK-ARM/*.d
+MDK-ARM/*.o
+MDK-ARM/*.axf
+MDK-ARM/*.hex
+MDK-ARM/*.bin
+MDK-ARM/*.map
+MDK-ARM/*.htm
+MDK-ARM/*.lnp
+MDK-ARM/*.sct
+MDK-ARM/*.build_log.htm
+MDK-ARM/*.dep
+MDK-ARM/JLink*.txt
+MDK-ARM/*.iex
+MDK-ARM/*.scvd
+
+# ============ Keil 个人设置（不要提交） ============
+MDK-ARM/*.uvoptx
+MDK-ARM/*.uvgui.*
+
+# ============ 调试/临时文件 ============
+*.bak
+*.swp
+*~
+_Debug/
+DebugConfig/
+debug/
+Temp/
+
+# ============ STM32CubeMX 生成 ============
+.mxproject
+
+# ============ IDE/编辑器 ============
+.idea/
+.vscode/
+*.suo
+*.user
+*.useros
+*.userprefs
+
+# ============ 系统文件 ============
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ============ 其他 ============
+*.log
+*.tmp

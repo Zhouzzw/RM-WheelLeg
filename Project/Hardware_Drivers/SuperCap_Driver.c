@@ -38,7 +38,7 @@ void SuperCap_Unpack_Data(uint8_t *Data)
 {
     memcpy((uint8_t *)&SuperCap_FeedBack_Data, Data, 8);
     RoboControl_Struct.SuperCap_V = SuperCap_FeedBack_Data.SuperCap_V_x100 / 100.0f;
-    RoboControl_Struct.Referee_P = SuperCap_FeedBack_Data.Referee_P_x10 / 10.0f;
-    RoboControl_Struct.Chassis_P = SuperCap_FeedBack_Data.Chassis_P_x10 / 10.0f;
+    RoboControl_Struct.Referee_P  = SuperCap_FeedBack_Data.Referee_P_x10 / 10.0f;
+    RoboControl_Struct.Chassis_P  = SuperCap_FeedBack_Data.Chassis_P_x10 / 10.0f;
 }
 

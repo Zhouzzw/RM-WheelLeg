@@ -18,7 +18,7 @@ typedef __PACKED_STRUCT
 typedef __PACKED_STRUCT
 {
     uint8_t State;                       //超电开关状态
-    uint16_t SuperCap_V_x100;            //电容组电压x100
+    uint16_t SuperCap_V_x100;            //电容组电压x100//(8~26.5)*100 V
     uint16_t Referee_P_x10;              //裁判系统功率x10
     uint16_t Chassis_P_x10;              //底盘功率x10
     uint8_t None; 

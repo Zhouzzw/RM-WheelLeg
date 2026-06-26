@@ -1,140 +1,69 @@
 //=====================================================================================
 //                    Remote_Control[遥控器数据解包]
-//      解析RM遥控器的数据，得到遥控器各个通道状态和键鼠信息，供RoboControl使用
-//
-//      遥控器以及键鼠数据  Remote_Control_Struct; Remote_Control_Last_Struct
+//      解析遥控器的数据，得到遥控器各个通道状态和键鼠信息，供RoboControl使用
 //=====================================================================================
 
 #include "Remote_Control.h"
 #include "RoboControl.h"
 
-
 /*===| 遥控器数据结构体 |===*/
-Remote_Control_StructTypeDef Remote_Control_Struct;
-Remote_Control_StructTypeDef Remote_Control_Last_Struct;
+remote_rawdata_t remote_rawdata;
+Remote_StructTypeDef Remote;
+Remote_StructTypeDef Remote_Last;
 
 /**
  * @brief 遥控串口接收中断回调函数
  *
  * @param 串口收到的数组
  */
-void Remote_Control_Rx_CallBack(uint8_t *Remote_Control_RxDataBuff)
+void Remote_Rx_CallBack(uint8_t *DataBuff)
 {
-    Remote_Control_Struct.If_Remote_Connect = 1;
-    Remote_Control_Struct.Remote_GetData_Ticker = 0;
-    
-    Remote_Control_GetData(Remote_Control_RxDataBuff);
-}
-
-/**
- * @brief 图传链路接收键鼠数据中断回调函数
- *
- * @param 串口收到的数组
- */
-void ImageLink_Rx_CallBack(Keyboard_Mouse_StructTypedef *Keyboard_Mouse_Struct)
-{
-    Remote_Control_Struct.If_ImageLink_Connect = 1;
-    Remote_Control_Struct.ImageLink_GetData_Ticker = 0;
-    
-    ImageLink_GetData(Keyboard_Mouse_Struct);
-}
-
-
-/**
-  * @brief 遥控器协议解析
-  * @param SBUS原始数据
-  * @param 遥控器解析后的数据结构体
-  */
-void Remote_Control_GetData(uint8_t *DataBuff)
-{
-    memcpy(&Remote_Control_Last_Struct, &Remote_Control_Struct, 31);
-    
-    Remote_Control_Struct.RC_Right_X   = (((DataBuff[0] | (DataBuff[1] << 8)) & 0x07ff) - RC_CH_VALUE_OFFSET) / 660.0f;        
-    Remote_Control_Struct.RC_Right_Y   = ((((DataBuff[1] >> 3) | (DataBuff[2] << 5)) & 0x07ff) - RC_CH_VALUE_OFFSET) / 660.0f;
-    Remote_Control_Struct.RC_Left_X    = ((((DataBuff[2] >> 6) | (DataBuff[3] << 2) | (DataBuff[4] << 10)) & 0x07ff) - RC_CH_VALUE_OFFSET) / 660.0f;
-    Remote_Control_Struct.RC_Left_Y    = ((((DataBuff[4] >> 1) | (DataBuff[5] << 7)) & 0x07ff) - RC_CH_VALUE_OFFSET) / 660.0f;
-    Remote_Control_Struct.RC_Side      = -((DataBuff[16] | (DataBuff[17] << 8)) - RC_CH_VALUE_OFFSET) / 660.0f;
-    
-    Remote_Control_Struct.S1 = ((DataBuff[5] >> 4) & 0x000C) >> 2;
-    Remote_Control_Struct.S2 = ((DataBuff[5] >> 4) & 0x0003);
-
-    int16_t Mouse_X = ((int16_t)DataBuff[6]) | ((int16_t)DataBuff[7] << 8);
-    int16_t Mouse_Y = ((int16_t)DataBuff[8]) | ((int16_t)DataBuff[9] << 8);
-    int16_t Mouse_Z = ((int16_t)DataBuff[10]) | ((int16_t)DataBuff[11] << 8); 
-    
-    if(Remote_Control_Struct.IF_USE_ImageLink == 0)
+    if(verify_CRC16_check_sum(DataBuff, 21) == TRUE)
     {
-        memcpy(&Remote_Control_Last_Struct.Mouse_Speed_X, &Remote_Control_Struct.Mouse_Speed_X, 30);
+        Remote.If_Remote_Connect = 1;
+        Remote.Remote_GetData_Ticker = 0;
         
-        Remote_Control_Struct.Mouse_Speed_X = Mouse_X / 32.0f;
-        Remote_Control_Struct.Mouse_Speed_Y = Mouse_Y / 32.0f;
-        Remote_Control_Struct.Mouse_Speed_Z = Mouse_Z / 32.0f;
-        
-        Remote_Control_Struct.Mouse_Press_L = DataBuff[12];
-        Remote_Control_Struct.Mouse_Press_R = DataBuff[13];
-        
-        Remote_Control_Struct.Keyboard_W       = !!(DataBuff[14] & 0x01);
-        Remote_Control_Struct.Keyboard_S       = !!(DataBuff[14] & 0x02);
-        Remote_Control_Struct.Keyboard_A       = !!(DataBuff[14] & 0x04);
-        Remote_Control_Struct.Keyboard_D       = !!(DataBuff[14] & 0x08);
-        Remote_Control_Struct.Keyboard_Shift   = !!(DataBuff[14] & 0x10);
-        Remote_Control_Struct.Keyboard_Ctrl    = !!(DataBuff[14] & 0x20);
-        Remote_Control_Struct.Keyboard_Q       = !!(DataBuff[14] & 0x40);
-        Remote_Control_Struct.Keyboard_E       = !!(DataBuff[14] & 0x80);
-        Remote_Control_Struct.Keyboard_R       = !!(DataBuff[15] & 0x01);
-        Remote_Control_Struct.Keyboard_F       = !!(DataBuff[15] & 0x02);
-        Remote_Control_Struct.Keyboard_G       = !!(DataBuff[15] & 0x04);
-        Remote_Control_Struct.Keyboard_Z       = !!(DataBuff[15] & 0x08);
-        Remote_Control_Struct.Keyboard_X       = !!(DataBuff[15] & 0x10);
-        Remote_Control_Struct.Keyboard_C       = !!(DataBuff[15] & 0x20);
-        Remote_Control_Struct.Keyboard_V       = !!(DataBuff[15] & 0x40);
-        Remote_Control_Struct.Keyboard_B       = !!(DataBuff[15] & 0x80);
-        
-        if(Remote_Control_Struct.RC_Right_X > -0.2f && Remote_Control_Struct.RC_Right_X  < 0.2f ) Remote_Control_Struct.RC_Right_X  = 0;
-        if(Remote_Control_Struct.RC_Right_Y > -0.2f && Remote_Control_Struct.RC_Right_Y  < 0.2f ) Remote_Control_Struct.RC_Right_Y  = 0;
-        if(Remote_Control_Struct.RC_Left_X  > -0.2f && Remote_Control_Struct.RC_Left_X   < 0.2f ) Remote_Control_Struct.RC_Left_X   = 0;
-        if(Remote_Control_Struct.RC_Left_Y  > -0.2f && Remote_Control_Struct.RC_Left_Y   < 0.2f ) Remote_Control_Struct.RC_Left_Y   = 0;
-        if(Remote_Control_Struct.RC_Side    > -0.2f && Remote_Control_Struct.RC_Side     < 0.2f ) Remote_Control_Struct.RC_Side     = 0;
-    }                                                                                                                         
+        memcpy(&remote_rawdata, DataBuff, sizeof(remote_rawdata));
 
-    Remote_Control_Struct.If_Remote_Data_New = 1;
-} 
-
-/**
-  * @brief 图传链路协议解析
-  * @param 图传链路原始数据
-  * @param 遥控器解析后的数据结构体
-  */
-void ImageLink_GetData(Keyboard_Mouse_StructTypedef *Keyboard_Mouse_Struct)
-{
-    if(Remote_Control_Struct.IF_USE_ImageLink == 1)
-    {
-        memcpy(&Remote_Control_Last_Struct.Mouse_Speed_X, &Remote_Control_Struct.Mouse_Speed_X, 30);
-
-        Remote_Control_Struct.Mouse_Speed_X = Keyboard_Mouse_Struct->Mouse_Speed_X / 32.0f;
-        Remote_Control_Struct.Mouse_Speed_Y = Keyboard_Mouse_Struct->Mouse_Speed_Y / 32.0f;
-        Remote_Control_Struct.Mouse_Speed_Z = Keyboard_Mouse_Struct->Mouse_Speed_Z / 32.0f;
+        memcpy(&Remote_Last, &Remote, sizeof(Remote_StructTypeDef));
+    
+        Remote.Right_X  = (remote_rawdata.ch_0 - Remote_CH_VALUE_OFFSET) / 660.0f;
+        Remote.Right_Y  = (remote_rawdata.ch_1 - Remote_CH_VALUE_OFFSET) / 660.0f;
+        Remote.Left_Y   = (remote_rawdata.ch_2 - Remote_CH_VALUE_OFFSET) / 660.0f;
+        Remote.Left_X   = (remote_rawdata.ch_3 - Remote_CH_VALUE_OFFSET) / 660.0f;
+        Remote.Mode     = remote_rawdata.mode_sw;
+        Remote.Pause    = remote_rawdata.pause;
+        Remote.Custom_L = remote_rawdata.fn_1;
+        Remote.Custom_R = remote_rawdata.fn_2;
+        Remote.Wheel    = (remote_rawdata.wheel - Remote_CH_VALUE_OFFSET) / 660.0f;
+        Remote.Trigger  = remote_rawdata.trigger;
         
-        Remote_Control_Struct.Mouse_Press_L    = Keyboard_Mouse_Struct->Mouse_Left;
-        Remote_Control_Struct.Mouse_Press_R    = Keyboard_Mouse_Struct->Mouse_Right;
+        Remote.Mouse_Vx = (remote_rawdata.mouse_x) / 32.0f;
+        Remote.Mouse_Vy = (remote_rawdata.mouse_y) / 32.0f;
+        Remote.Mouse_Vz = (remote_rawdata.mouse_z) / 32.0f;
         
-        Remote_Control_Struct.Keyboard_W       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0001);
-        Remote_Control_Struct.Keyboard_S       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0002);
-        Remote_Control_Struct.Keyboard_A       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0004);
-        Remote_Control_Struct.Keyboard_D       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0008);
-        Remote_Control_Struct.Keyboard_Shift   = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0010);
-        Remote_Control_Struct.Keyboard_Ctrl    = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0020);
-        Remote_Control_Struct.Keyboard_Q       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0040);
-        Remote_Control_Struct.Keyboard_E       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0080);
-        Remote_Control_Struct.Keyboard_R       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0100);
-        Remote_Control_Struct.Keyboard_F       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0200);
-        Remote_Control_Struct.Keyboard_G       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0400);
-        Remote_Control_Struct.Keyboard_Z       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x0800);
-        Remote_Control_Struct.Keyboard_X       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x1000);
-        Remote_Control_Struct.Keyboard_C       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x2000);
-        Remote_Control_Struct.Keyboard_V       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x4000);
-        Remote_Control_Struct.Keyboard_B       = !!(Keyboard_Mouse_Struct->KeyBoard & 0x8000);
+        Remote.Mouse_L = remote_rawdata.mouse_left;
+        Remote.Mouse_M = remote_rawdata.mouse_middle;
+        Remote.Mouse_R = remote_rawdata.mouse_right;
+        
+        Remote.Keyboard_W       = !!(remote_rawdata.key1 & 0x01);
+        Remote.Keyboard_S       = !!(remote_rawdata.key1 & 0x02);
+        Remote.Keyboard_A       = !!(remote_rawdata.key1 & 0x04);
+        Remote.Keyboard_D       = !!(remote_rawdata.key1 & 0x08);
+        Remote.Keyboard_Shift   = !!(remote_rawdata.key1 & 0x10);
+        Remote.Keyboard_Ctrl    = !!(remote_rawdata.key1 & 0x20);
+        Remote.Keyboard_Q       = !!(remote_rawdata.key1 & 0x40);
+        Remote.Keyboard_E       = !!(remote_rawdata.key1 & 0x80);
+        Remote.Keyboard_R       = !!(remote_rawdata.key2 & 0x01);
+        Remote.Keyboard_F       = !!(remote_rawdata.key2 & 0x02);
+        Remote.Keyboard_G       = !!(remote_rawdata.key2 & 0x04);
+        Remote.Keyboard_Z       = !!(remote_rawdata.key2 & 0x08);
+        Remote.Keyboard_X       = !!(remote_rawdata.key2 & 0x10);
+        Remote.Keyboard_C       = !!(remote_rawdata.key2 & 0x20);
+        Remote.Keyboard_V       = !!(remote_rawdata.key2 & 0x40);
+        Remote.Keyboard_B       = !!(remote_rawdata.key2 & 0x80);
+
+        Remote.If_Remote_Data_New = 1;
     }
-    
-    Remote_Control_Struct.If_ImageLink_Data_New = 1;
-} 
+}
+

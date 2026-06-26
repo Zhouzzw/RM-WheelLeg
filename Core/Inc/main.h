@@ -54,11 +54,13 @@ extern "C" {
 #include "define.h"
 #include "PID.h"
 #include "CAN_Driver.h"
-#include "Motor_Driver.h"
 #include "USART_Driver.h"
 #include "USB_Driver.h"
 #include "Function.h"
 #include "DWT.h"
+#include "crc8_crc16.h"
+#include "Motor_Driver.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

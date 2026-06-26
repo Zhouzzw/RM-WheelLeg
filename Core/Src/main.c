@@ -126,7 +126,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
     /*===| 蜂鸣器 |===*/
         Buzzer_Init();                   
-        Buzzer_Set_Tone(L3);
+//        Buzzer_Set_Tone(L3);
         
         /*===| 初始化DWT |===*/
         DWT_Init(170);
@@ -224,7 +224,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM20) {
+  if (htim->Instance == TIM20)
+  {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */

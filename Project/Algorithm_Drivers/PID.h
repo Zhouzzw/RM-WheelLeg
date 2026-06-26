@@ -17,6 +17,7 @@ typedef struct
     float Target;
     float Target_Last;
     float Feedback;
+	float Targer_LowPass_K;
     
     float Error;
     float Error_Last;   

@@ -78,7 +78,7 @@ typedef struct kf_t
     mat Q;         // process noise covariance matrix Q
     mat R;         // measurement noise covariance matrix R
     mat K;         // kalman gain  K
-    mat S, temp_matrix, temp_matrix1, temp_vector, temp_vector1;
+    mat S1, temp_matrix, temp_matrix1, temp_vector, temp_vector1;
 
     int8_t MatStatus;
 

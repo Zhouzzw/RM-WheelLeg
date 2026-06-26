@@ -4,29 +4,40 @@
 #include "main.h"
 
 /*===| 云台电机PID参数 |===*/
-#define Gimbal_Yaw_Angle_PID_Kp                 400.0f
+#define Gimbal_Yaw_Angle_PID_Kp                 50.0f
 #define Gimbal_Yaw_Angle_PID_Ki                 0.0f
-#define Gimbal_Yaw_Angle_PID_Kd                 20000.0f
+#define Gimbal_Yaw_Angle_PID_Kd                 1000.0f
 #define Gimbal_Yaw_Angle_PID_I_Output_Max       0.0f
-#define Gimbal_Yaw_Angle_PID_Output_Max         16000.0f
-
-#define Gimbal_Yaw_Speed_PID_Kp                 10.0f
-#define Gimbal_Yaw_Speed_PID_Ki                 0.0f
+#define Gimbal_Yaw_Angle_PID_Output_Max         200.0f
+                                                
+#define Gimbal_Yaw_Speed_PID_Kp                 30.0f
+#define Gimbal_Yaw_Speed_PID_Ki                 0.1f
 #define Gimbal_Yaw_Speed_PID_Kd                 0.0f
-#define Gimbal_Yaw_Speed_PID_I_Output_Max       0.0f
-#define Gimbal_Yaw_Speed_PID_Output_Max         16000.0f
+#define Gimbal_Yaw_Speed_PID_I_Output_Max       500.0f
+#define Gimbal_Yaw_Speed_PID_Output_Max         12000.0f
 
-#define Gimbal_Pitch_Angle_PID_Kp                 50.0f
+#define Gimbal_Pitch_Angle_PID_Kp                 20.0f
 #define Gimbal_Pitch_Angle_PID_Ki                 0.0f
-#define Gimbal_Pitch_Angle_PID_Kd                 0.0f
+#define Gimbal_Pitch_Angle_PID_Kd                 600.0f
 #define Gimbal_Pitch_Angle_PID_I_Output_Max       0.0f
-#define Gimbal_Pitch_Angle_PID_Output_Max         100.0f
+#define Gimbal_Pitch_Angle_PID_Output_Max         300.0f
+
+#define Gimbal_Pitch_Speed_PID_Kp                 30.0f
+#define Gimbal_Pitch_Speed_PID_Ki                 0.2f
+#define Gimbal_Pitch_Speed_PID_Kd                 0.0f
+#define Gimbal_Pitch_Speed_PID_I_Output_Max       800.0f
+#define Gimbal_Pitch_Speed_PID_Output_Max         12000.0f
+
+#define Gimbal_DM_PID_Kp                 120.0f
+#define Gimbal_DM_PID_Kd                 0.5f
 
 /*===| 云台状态参数枚举 |===*/
 typedef enum
 {
-    Gimbal_State_Gyro = 0,
-    Gimbal_State_Aimming = 1,
+    Gimbal_State_Normal = 0,
+    Gimbal_State_Slow = 1,
+	  Gimbal_State_OFF	= 2,
+		Gimbal_State_Aim  = 3,
 } Gimbal_State_EnumTypedef;
 
 
@@ -41,6 +52,7 @@ typedef struct
     
     int16_t Yaw_Encoder_Err;                      //云台和底盘的编码器偏移角
     float Yaw_Err;                              //云台和底盘的偏移角
+    float Vision_Yaw_Err;
         
     /*===| pitch单位为度 |===*/   
     float Pitch_Target;                         //目标Pitch值

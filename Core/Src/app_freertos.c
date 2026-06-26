@@ -57,6 +57,7 @@ osThreadId Key_LEDHandle;
 osThreadId BuzzerHandle;
 osThreadId UIHandle;
 osThreadId ShootHandle;
+osThreadId AimHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -73,6 +74,7 @@ void Key_LED_Task(void const * argument);
 void Buzzer_Task(void const * argument);
 void UI_Task(void const * argument);
 void Shoot_Task(void const * argument);
+void Aim_Task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -108,11 +110,11 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of Robo */
-  osThreadDef(Robo, Robo_Task, osPriorityIdle, 0, 512);
+  osThreadDef(Robo, Robo_Task, osPriorityRealtime, 0, 512);
   RoboHandle = osThreadCreate(osThread(Robo), NULL);
 
   /* definition and creation of INS */
-  osThreadDef(INS, INS_Task, osPriorityIdle, 0, 1024);
+  osThreadDef(INS, INS_Task, osPriorityLow, 0, 1024);
   INSHandle = osThreadCreate(osThread(INS), NULL);
 
   /* definition and creation of Gimbal */
@@ -120,11 +122,11 @@ void MX_FREERTOS_Init(void) {
   GimbalHandle = osThreadCreate(osThread(Gimbal), NULL);
 
   /* definition and creation of Chassis */
-  osThreadDef(Chassis, Chassis_Task, osPriorityIdle, 0, 512);
+  osThreadDef(Chassis, Chassis_Task, osPriorityHigh, 0, 2048);
   ChassisHandle = osThreadCreate(osThread(Chassis), NULL);
 
   /* definition and creation of Communicate */
-  osThreadDef(Communicate, Communicate_Task, osPriorityIdle, 0, 512);
+  osThreadDef(Communicate, Communicate_Task, osPriorityBelowNormal, 0, 512);
   CommunicateHandle = osThreadCreate(osThread(Communicate), NULL);
 
   /* definition and creation of Key_LED */
@@ -136,12 +138,16 @@ void MX_FREERTOS_Init(void) {
   BuzzerHandle = osThreadCreate(osThread(Buzzer), NULL);
 
   /* definition and creation of UI */
-  osThreadDef(UI, UI_Task, osPriorityIdle, 0, 256);
+  osThreadDef(UI, UI_Task, osPriorityIdle, 0, 512);
   UIHandle = osThreadCreate(osThread(UI), NULL);
 
   /* definition and creation of Shoot */
-  osThreadDef(Shoot, Shoot_Task, osPriorityIdle, 0, 512);
-  ShootHandle = osThreadCreate(osThread(Shoot), NULL);
+//  osThreadDef(Shoot, Shoot_Task, osPriorityIdle, 0, 512);
+//  ShootHandle = osThreadCreate(osThread(Shoot), NULL);
+
+  /* definition and creation of Aim */
+//  osThreadDef(Aim, Aim_Task, osPriorityIdle, 0, 512);
+//  AimHandle = osThreadCreate(osThread(Aim), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -150,6 +156,7 @@ void MX_FREERTOS_Init(void) {
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
+#include "Motor_Driver.h"
 /**
   * @brief  Function implementing the defaultTask thread.
   * @param  argument: Not used
@@ -164,7 +171,9 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+      Get_TotalAngle_Speed(&Motor_Data_Struct[Gimbal_Pitch_ID]);
+      Get_TotalAngle_Speed(&Motor_Data_Struct[Gimbal_Yaw_ID]);
+    osDelay(10);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -329,6 +338,24 @@ void Shoot_Task(void const * argument)
     osDelay(1);
   }
   /* USER CODE END Shoot_Task */
+}
+
+/* USER CODE BEGIN Header_Aim_Task */
+/**
+* @brief Function implementing the Aim thread.
+* @param argument: Not used
+* @retval None
+*/__weak
+/* USER CODE END Header_Aim_Task */
+void Aim_Task(void const * argument)
+{
+  /* USER CODE BEGIN Aim_Task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END Aim_Task */
 }
 
 /* Private application code --------------------------------------------------*/

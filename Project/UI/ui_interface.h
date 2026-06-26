@@ -5,8 +5,7 @@
 #ifndef SERIAL_TEST_UI_INTERFACE_H
 #define SERIAL_TEST_UI_INTERFACE_H
 
-#include "main.h"
-
+#include <stdio.h>
 #include "ui_types.h"
 
 extern int ui_self_id;

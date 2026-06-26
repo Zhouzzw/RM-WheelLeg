@@ -12,16 +12,19 @@
 #include "Referee_Unpack.h"
 #include "PID.h"
 
-float Motor_Power_Pre[4];
-float Motor_Power_Zoom[4];
-float Power_K;
-double Inverse_Torque[2];
-float Torque_Current[8];
+#define K1   				1.23e-07f
+#define K2   				1.453e-07f
+#define Static_Power    	4.081f
+
+float Motor_Power_Pre[2];
+float Motor_Power_Zoom[2];
 float Power_Pre_Sum;
+float Power_K;
+float Inverse_Torque[2];
+
 double a;
 double b;
 double c;
-
 
 /**
  * @brief 功率限制模型
@@ -30,33 +33,31 @@ double c;
  * @param 电机数据结构体
  * @param 底盘最大功率
  */
-void Power_Limit(Chassis_Control_StructTypeDef *Chassis_Struct,Motor_Data_StructTypeDef *Motor_Data,float P_max)
+ 
+// Power_Limit(&Chassis_Control_Struct, &Motor_Data_Struct, Chassis_Control_Struct.Power_MAX, TP_wl_wr_jl_jr);
+
+void Power_Limit(Chassis_Control_StructTypeDef *Chassis_Struct,Motor_Data_StructTypeDef *Motor_Data,float P_max,float *Torque_Wheel)
 {
 	/*===| 根据目标力矩和当前转速预测下一时刻的功率 |===*/
-	for(uint8_t i = 0 ; i < 4 ; i++)
-	{
-		Motor_Power_Pre[i] = Power_Predict_Calculate(&Motor_Data[i],&Chassis_Struct->MotorID_PID_Struct[i]);
-	}
+	Motor_Power_Pre[0] = Power_Predict_Calculate(&Motor_Data[5],Torque_Wheel[4]);
+	Motor_Power_Pre[1] = Power_Predict_Calculate(&Motor_Data[6],Torque_Wheel[5]);
 	
 	/*===| 计算缩放系数[P_max / Power_Pre_Sum] |===*/
 	Power_K = Power_Proportional_scaling(Motor_Power_Pre,P_max);
-	for(uint8_t i = 0  ;i < 4 ; i++)
+	if(Motor_Power_Pre[0]>0)
 	{
-		if(Motor_Power_Pre[i]>0)
-		{
-			Motor_Power_Zoom[i] = Power_K * Motor_Power_Pre[i];
-		}
+		Motor_Power_Zoom[0] = Power_K * Motor_Power_Pre[0];
+	}
+	if(Motor_Power_Pre[1]>0)
+	{
+		Motor_Power_Zoom[1] = Power_K * Motor_Power_Pre[1];
 	}
 	
 	/*===| 根据缩放后的功率，逆结算出输出的力矩 |===*/
-	for(uint8_t i = 0  ;i < 4 ; i++)
+	for(uint8_t i = 0  ;i <= 1 ; i++)
 	{
-		Torque_Inverse_Solution(&Torque_Current[2*i],Motor_Power_Zoom[i],&Motor_Data[i]);
-	}
-	
-	for(uint8_t i = 0 ; i<4 ; i++)
-	{
-		Torque_decision(Chassis_Struct,i);
+		Torque_Inverse_Solution(Inverse_Torque,Motor_Power_Zoom[i],&Motor_Data[i+5]);
+		Torque_decision(Chassis_Struct,i,Torque_Wheel);
 	}
 }	
 
@@ -66,11 +67,10 @@ void Power_Limit(Chassis_Control_StructTypeDef *Chassis_Struct,Motor_Data_Struct
  * @param 电机数据结构体
  * @param 电机PID结构体
  */
-float Power_Predict_Calculate(Motor_Data_StructTypeDef *Motor_Data,PID_Struct_TypeDef* Motor_PID_Struct)
+float Power_Predict_Calculate(Motor_Data_StructTypeDef *Motor_Data, float Wheel_Torque)
 {
 	float Power_Per;
-	Power_Per = (Motor_PID_Struct->Output * Current2Torque) * Motor_Data->SpeedRPM / 9.55f + K1 * Motor_PID_Struct->Output * Motor_PID_Struct->Output + K2 * Motor_Data->SpeedRPM * Motor_Data->SpeedRPM + Static_Power;
-	
+	Power_Per = (Wheel_Torque)*(Motor_Data->Speed_RPM/Motor_3508_Reduction)/9.55f  +  K1*(Motor_Data->Speed_RPM/Motor_3508_Reduction)*(Motor_Data->Speed_RPM/Motor_3508_Reduction)  +  K2*Wheel_Torque*Wheel_Torque  +  Static_Power;	
 	return Power_Per;
 }
 
@@ -78,14 +78,14 @@ float Power_Predict_Calculate(Motor_Data_StructTypeDef *Motor_Data,PID_Struct_Ty
 /**
  * @brief 功率缩放计算
  *
- * @param 预测后四个电机的功率
+ * @param 预测两个轮电机的功率
  * @param 最大底盘总功率
  */
 float Power_Proportional_scaling(float *Power_Pre,float P_max)
 {
 	float Proportional_Constant;
 	
-	Power_Pre_Sum = Power_Pre[0] + Power_Pre[1] + Power_Pre[2] + Power_Pre[3];
+	Power_Pre_Sum = Power_Pre[0] + Power_Pre[1];
 	Proportional_Constant = P_max / Power_Pre_Sum;
 	
 	if(Proportional_Constant > 1.0f || Proportional_Constant < 0.0f) Proportional_Constant = 1.0f;
@@ -93,68 +93,38 @@ float Power_Proportional_scaling(float *Power_Pre,float P_max)
 }
 
 
-
-
 /**
  * @brief 逆结算出功率缩放后的力矩
  *
  * @param 力矩结构体[Pos,Neg]
  * @param 单电机功率
- * @param 电机PID结构体
  * @param 电机数据结构体
  */
-//void Torque_Inverse_Solution(float * Torque_Current,float P_max_Single,Motor_Data_StructTypeDef *Motor_Data)
-//{
-//	a = K1;
-//	b = Torque2Current * Motor_Data->SpeedRPM / 9.55f;
-//	c = K2 * (Motor_Data->SpeedRPM) * (Motor_Data->SpeedRPM) + Static_Power - P_max_Single;
-//	
-//	Inverse_Torque[0] = (-b + sqrt(b * b - 4.0f * a *c)) / (2.0f * a);
-//	Inverse_Torque[1] = (-b - sqrt(b * b - 4.0f * a *c)) / (2.0f * a);
-//	
-//	if(Inverse_Torque[0] >= 0) 
-//	{
-//		Torque_Current[0] = Inverse_Torque[0];
-//		Torque_Current[1] = Inverse_Torque[1];
-//	}
-//	else 
-//	{
-//		Torque_Current[0] = Inverse_Torque[1];
-//		Torque_Current[1] = Inverse_Torque[0];
-//	}
-//	
-//	Limit_float(&Torque_Current[0],16000,-16000);
-//	Limit_float(&Torque_Current[1],16000,-16000);
-//}
-
-void Torque_Inverse_Solution(float * Torque_Current,float P_max_Single,Motor_Data_StructTypeDef *Motor_Data)
+void Torque_Inverse_Solution(float *Inverse_Torque,float P_max_Single,Motor_Data_StructTypeDef *Motor_Data)
 {
 	a = K1;
-	b = Current2Torque * Motor_Data->SpeedRPM / 9.55f;
-	c = K2 * (Motor_Data->SpeedRPM) * (Motor_Data->SpeedRPM) + Static_Power - P_max_Single;
+	b = Motor_Data->Speed_RPM / 9.55f;
+	c = K2*(Motor_Data->Speed_RPM)*(Motor_Data->Speed_RPM) + Static_Power - P_max_Single;
 	
-	Inverse_Torque[0] = (-b + sqrt(b * b - 4.0f * a *c)) / (2.0f * a);
-	Inverse_Torque[1] = (-b - sqrt(b * b - 4.0f * a *c)) / (2.0f * a);
+	Inverse_Torque[0] = (-b + sqrt(b * b - 4.0f * a *c)) / (2.0f * a);//+
+	Inverse_Torque[1] = (-b - sqrt(b * b - 4.0f * a *c)) / (2.0f * a);//-
 	
-	Torque_Current[0] = Inverse_Torque[0];
-	Torque_Current[1] = Inverse_Torque[1];
-	
-	Limit_float(&Torque_Current[0],16000,-16000) ;
-	Limit_float(&Torque_Current[1],16000,-16000) ;
+	Limit_float(&Inverse_Torque[0],5.0f,-5.0f) ;
+	Limit_float(&Inverse_Torque[1],5.0f,-5.0f) ;
 }
 
 /**
  * @brief 力矩决策
  */
-void Torque_decision(Chassis_Control_StructTypeDef *Chassis_Struct,uint8_t Order)
+void Torque_decision(Chassis_Control_StructTypeDef *Chassis_Struct,uint8_t i,float *Torque_Wheel)
 {
-	if(Chassis_Struct->MotorID_PID_Struct[Order].Output >0)
+	if(Torque_Wheel[i+4] > 0)
 	{
-		Chassis_Struct->MotorID_PID_Struct[Order].Output = Torque_Current[2*Order];
+		Torque_Wheel[i+4] = Inverse_Torque[0];//+
 	}
 	else 
 	{
-		Chassis_Struct->MotorID_PID_Struct[Order].Output = Torque_Current[2*Order+1];
+		Torque_Wheel[i+4] = Inverse_Torque[1];//-
 	}
 }
 

@@ -43,15 +43,15 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
-  hfdcan1.Init.AutoRetransmission = DISABLE;
+  hfdcan1.Init.AutoRetransmission = ENABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 17;
-  hfdcan1.Init.NominalSyncJumpWidth = 1;
-  hfdcan1.Init.NominalTimeSeg1 = 4;
-  hfdcan1.Init.NominalTimeSeg2 = 5;
+  hfdcan1.Init.NominalPrescaler = 5;
+  hfdcan1.Init.NominalSyncJumpWidth = 8;
+  hfdcan1.Init.NominalTimeSeg1 = 25;
+  hfdcan1.Init.NominalTimeSeg2 = 8;
   hfdcan1.Init.DataPrescaler = 1;
-  hfdcan1.Init.DataSyncJumpWidth = 1;
+  hfdcan1.Init.DataSyncJumpWidth = 8;
   hfdcan1.Init.DataTimeSeg1 = 1;
   hfdcan1.Init.DataTimeSeg2 = 1;
   hfdcan1.Init.StdFiltersNbr = 0;
@@ -81,15 +81,15 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan2.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan2.Init.Mode = FDCAN_MODE_NORMAL;
-  hfdcan2.Init.AutoRetransmission = DISABLE;
+  hfdcan2.Init.AutoRetransmission = ENABLE;
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
-  hfdcan2.Init.NominalPrescaler = 17;
-  hfdcan2.Init.NominalSyncJumpWidth = 1;
-  hfdcan2.Init.NominalTimeSeg1 = 4;
-  hfdcan2.Init.NominalTimeSeg2 = 5;
+  hfdcan2.Init.NominalPrescaler = 5;
+  hfdcan2.Init.NominalSyncJumpWidth = 8;
+  hfdcan2.Init.NominalTimeSeg1 = 25;
+  hfdcan2.Init.NominalTimeSeg2 = 8;
   hfdcan2.Init.DataPrescaler = 1;
-  hfdcan2.Init.DataSyncJumpWidth = 1;
+  hfdcan2.Init.DataSyncJumpWidth = 8;
   hfdcan2.Init.DataTimeSeg1 = 1;
   hfdcan2.Init.DataTimeSeg2 = 1;
   hfdcan2.Init.StdFiltersNbr = 0;
@@ -119,15 +119,15 @@ void MX_FDCAN3_Init(void)
   hfdcan3.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan3.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan3.Init.Mode = FDCAN_MODE_NORMAL;
-  hfdcan3.Init.AutoRetransmission = DISABLE;
+  hfdcan3.Init.AutoRetransmission = ENABLE;
   hfdcan3.Init.TransmitPause = DISABLE;
   hfdcan3.Init.ProtocolException = DISABLE;
-  hfdcan3.Init.NominalPrescaler = 17;
-  hfdcan3.Init.NominalSyncJumpWidth = 1;
-  hfdcan3.Init.NominalTimeSeg1 = 4;
-  hfdcan3.Init.NominalTimeSeg2 = 5;
+  hfdcan3.Init.NominalPrescaler = 5;
+  hfdcan3.Init.NominalSyncJumpWidth = 8;
+  hfdcan3.Init.NominalTimeSeg1 = 25;
+  hfdcan3.Init.NominalTimeSeg2 = 8;
   hfdcan3.Init.DataPrescaler = 1;
-  hfdcan3.Init.DataSyncJumpWidth = 1;
+  hfdcan3.Init.DataSyncJumpWidth = 8;
   hfdcan3.Init.DataTimeSeg1 = 1;
   hfdcan3.Init.DataTimeSeg2 = 1;
   hfdcan3.Init.StdFiltersNbr = 0;
@@ -184,9 +184,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     /* FDCAN1 interrupt Init */
-    HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
-    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
   /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
@@ -226,9 +226,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     /* FDCAN2 interrupt Init */
-    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
-    HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
   /* USER CODE BEGIN FDCAN2_MspInit 1 */
 
@@ -268,9 +268,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     /* FDCAN3 interrupt Init */
-    HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
-    HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
   /* USER CODE BEGIN FDCAN3_MspInit 1 */
 

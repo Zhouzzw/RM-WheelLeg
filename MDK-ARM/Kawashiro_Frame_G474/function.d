@@ -8,16 +8,8 @@
   ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h \
   ..\Drivers\CMSIS\Include\core_cm4.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  E:\Embeded\RoboMaster\Kawashiro_G474_Controller\Kawashiro_Frame_G474\Drivers\CMSIS\Include\cmsis_version.h \
-  E:\Embeded\RoboMaster\Kawashiro_G474_Controller\Kawashiro_Frame_G474\Drivers\CMSIS\Include\cmsis_compiler.h \
-  E:\Embeded\RoboMaster\Kawashiro_G474_Controller\Kawashiro_Frame_G474\Drivers\CMSIS\Include\cmsis_armclang.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
-  E:\Embeded\RoboMaster\Kawashiro_G474_Controller\Kawashiro_Frame_G474\Drivers\CMSIS\Include\mpu_armv7.h \
   ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h \
@@ -51,34 +43,28 @@
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math_types.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\arm_math.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\arm_math_types.h \
   ..\Drivers\CMSIS\Include\cmsis_compiler.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\string.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\math.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\float.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\limits.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\arm_math_memory.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\none.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\utils.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\basic_math_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\interpolation_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\bayes_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\statistics_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\fast_math_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\matrix_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\complex_math_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\controller_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\support_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\distance_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\svm_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\svm_defines.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\transform_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\filtering_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\quaternion_math_functions.h \
-  E:\Embeded\Keil_v5\PACK\ARM\CMSIS-DSP\1.15.0\Include\dsp\window_functions.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdio.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdarg.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\arm_math_memory.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\none.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\utils.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\basic_math_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\interpolation_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\bayes_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\statistics_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\fast_math_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\matrix_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\complex_math_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\controller_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\support_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\distance_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\svm_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\svm_defines.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\transform_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\filtering_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\quaternion_math_functions.h \
+  D:\Keil\Packs\ARM\CMSIS-DSP\1.16.2\Include\dsp\window_functions.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -98,11 +84,11 @@
   ..\Core\Inc\opamp.h ..\Core\Inc\spi.h ..\Core\Inc\tim.h \
   ..\Core\Inc\usart.h ..\USB_Device\App\usb_device.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
-  ..\USB_Device\Target\usbd_conf.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdlib.h ..\Core\Inc\gpio.h \
+  ..\USB_Device\Target\usbd_conf.h ..\Core\Inc\gpio.h \
   ..\Project\Robot_Application\define.h \
   ..\Project\Algorithm_Drivers\PID.h \
   ..\Project\Commnuicate_Drivers\CAN_Driver.h \
-  ..\Project\Hardware_Drivers\Motor_Driver.h \
   ..\Project\Commnuicate_Drivers\USART_Driver.h \
-  ..\Project\Commnuicate_Drivers\USB_Driver.h ..\Project\BSP\DWT.h
+  ..\Project\Commnuicate_Drivers\USB_Driver.h ..\Project\BSP\DWT.h \
+  ..\Project\Algorithm_Drivers\crc8_crc16.h \
+  ..\Project\Hardware_Drivers\Motor_Driver.h ..\Project\BSP\flash.h

@@ -58,27 +58,27 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI2_CE_GPIO_Port, SPI2_CE_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : PEPin PEPin */
+  /*Configure GPIO pins : IMU_CS_ACC_Pin IMU_CS_GYRO_Pin */
   GPIO_InitStruct.Pin = IMU_CS_ACC_Pin|IMU_CS_GYRO_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PCPin PCPin */
+  /*Configure GPIO pins : IMU_INT_ACC_Pin IMU_INT_GYRO_Pin */
   GPIO_InitStruct.Pin = IMU_INT_ACC_Pin|IMU_INT_GYRO_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PtPin */
+  /*Configure GPIO pin : SPI2_CE_Pin */
   GPIO_InitStruct.Pin = SPI2_CE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(SPI2_CE_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PDPin PDPin PDPin */
+  /*Configure GPIO pins : K_L_Pin K_P_Pin K_R_Pin */
   GPIO_InitStruct.Pin = K_L_Pin|K_P_Pin|K_R_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;

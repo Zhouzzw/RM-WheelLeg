@@ -66,21 +66,25 @@ typedef struct
 
 typedef struct
 {
+    uint8_t If_INS_Init;
+    
     float Yaw;
     float Pitch;
     float Roll;
     float Yaw_Speed;
     int32_t Yaw_Round;
     float YawTotalAngle;
+    float Last_Yaw;
     
     float Acc[3];
     float Gyro[3];
 }INS_Data_StructTypedef;
 
-extern INS_Data_StructTypedef INS_Data;
+extern INS_Data_StructTypedef INS_Data_Gimbal;
+extern INS_Data_StructTypedef INS_Data_Self;
+//extern INS_t INS_Data_Accel;
 
 void INS_Init(void);
-void INS_Task(void);
 void IMU_Temperature_Ctrl(void);
 
 void QuaternionUpdate(float *q, float gx, float gy, float gz, float dt);
@@ -88,5 +92,7 @@ void QuaternionToEularAngle(float *q, float *Yaw, float *Pitch, float *Roll);
 void EularAngleToQuaternion(float Yaw, float Pitch, float Roll, float *q);
 void BodyFrameToEarthFrame(const float *vecBF, float *vecEF, float *q);
 void EarthFrameToBodyFrame(const float *vecEF, float *vecBF, float *q);
+
+void INS_Get_Data_Call_Back(uint8_t *Data);
 
 #endif

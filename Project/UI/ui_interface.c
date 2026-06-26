@@ -9,18 +9,22 @@
 uint8_t seq = 0;
 extern int UI_SELF_ID;
 
-void print_message(const uint8_t *message, const int length) {
+float Last_Send_Time;
+void print_message(const uint8_t *message, const int length) 
+{
     for (int i = 0; i < length; i++) {
         printf("%c", message[i]);
     }
+    Last_Send_Time = DWT_GetTimeline_ms();
 
-	osDelay(35);
+    while(DWT_GetTimeline_ms() - Last_Send_Time < 30) osDelay(1); //最大50Hz
 }
 
 int fputc(int ch,FILE *f)
 {
 	uint8_t temp[1] = {ch};
-	HAL_UART_Transmit(&huart4, temp, 1, 100);
+	HAL_UART_Transmit(&huart5, temp, 1 ,100);
+//    while(HAL_DMA_GetState(&hdma_uart5_tx) != HAL_DMA_STATE_READY);
 	return ch;
 }
  

@@ -1,25 +1,29 @@
 //
 // Created by bismarckkk on 2024/2/17.
 //
-#include "main.h"
-#ifndef SERIAL_TEST_UI_TYPES_H
-#define SERIAL_TEST_UI_TYPES_H
 
-#ifdef __GNUC__
+#ifndef UI_TYPES_H
+#define UI_TYPES_H
+
+// User Code Begin
+
+#if defined(__GNUC__) || defined(__CC_ARM)
 #define MESSAGE_PACKED __attribute__((packed))
 #include <stdint.h>
 #else
-#define MESSAGE_PACKED
+#error "MESSAGE_PACKED not defined for this compiler"
 #endif
+
+// User Code End
 
 #define PRIMITIVE_CAT(x, y) x ## y
 #define CAT(x, y) PRIMITIVE_CAT(x, y)
 
 #define DEFINE_MESSAGE(name, p_a, p_b, p_c, p_d, p_e)   \
-typedef __PACKED_STRUCT {                                        \
+typedef struct {                                        \
 uint8_t figure_name[3];                                 \
-uint32_t operate_tpyel:3;                               \
-uint32_t figure_tpye:3;                                 \
+uint32_t operate_type:3;                                \
+uint32_t figure_type:3;                                 \
 uint32_t layer:4;                                       \
 uint32_t color:4;                                       \
 uint32_t PRIMITIVE_CAT(,p_a) :9;                        \
@@ -39,10 +43,10 @@ DEFINE_MESSAGE(round, _a, _b, r, _d, _e);
 DEFINE_MESSAGE(ellipse, _a, _b, _c, rx, ry);
 DEFINE_MESSAGE(arc, start_angle, end_angle, _c, rx, ry);
 
-typedef __PACKED_STRUCT {
+typedef struct {
     uint8_t figure_name[3];
-    uint32_t operate_tpyel: 3;
-    uint32_t figure_tpye: 3;
+    uint32_t operate_type: 3;
+    uint32_t figure_type: 3;
     uint32_t layer: 4;
     uint32_t color: 4;
     uint32_t font_size: 9;
@@ -53,10 +57,10 @@ typedef __PACKED_STRUCT {
     int32_t number;
 } MESSAGE_PACKED ui_interface_number_t;
 
-typedef __PACKED_STRUCT {
+typedef struct {
     uint8_t figure_name[3];
-    uint32_t operate_tpyel: 3;
-    uint32_t figure_tpye: 3;
+    uint32_t operate_type: 3;
+    uint32_t figure_type: 3;
     uint32_t layer: 4;
     uint32_t color: 4;
     uint32_t font_size: 9;
@@ -70,7 +74,7 @@ typedef __PACKED_STRUCT {
     char string[30];
 } MESSAGE_PACKED ui_interface_string_t;
 
-typedef __PACKED_STRUCT {
+typedef struct {
     uint8_t SOF;
     uint16_t length;
     uint8_t seq, crc8;
@@ -79,7 +83,7 @@ typedef __PACKED_STRUCT {
 } MESSAGE_PACKED ui_frame_header_t;
 
 #define DEFINE_FIGURE_MESSAGE(num)      \
-typedef __PACKED_STRUCT {                        \
+typedef struct {                        \
 ui_frame_header_t header;               \
 ui_interface_figure_t data[num];        \
 uint16_t crc16;                         \
@@ -90,10 +94,10 @@ DEFINE_FIGURE_MESSAGE(2);
 DEFINE_FIGURE_MESSAGE(5);
 DEFINE_FIGURE_MESSAGE(7);
 
-typedef __PACKED_STRUCT {
+typedef struct {
     ui_frame_header_t header;
     ui_interface_string_t option;
     uint16_t crc16;
 } MESSAGE_PACKED ui_string_frame_t;
 
-#endif //SERIAL_TEST_UI_TYPES_H
+#endif //UI_TYPES_H

@@ -3,75 +3,31 @@
 
 #include "main.h"
 
-/*===| 电机反馈数据结构体定义 |===*/
+#define Motor_Num 13
+
+/*===| 电机数据结构体定义 |===*/
 typedef struct
 {
     int16_t Encoder;        //编码器值
-    int16_t Encoder_Last;   //上一次的编码器值
-    int Round;          //总圈数
+    int16_t Encoder_Last;   //上一个编码器值
+    int32_t Round;          //圈数
+    float Angle;            //绝对角度   
+    float Angle_Last;       //上一个绝对角度     
     float Total_Angle;      //总角度值
-	int16_t SpeedRPM;       //转速[RPM]
-	int16_t Torque;         //力矩[电流]
+    float Total_Angle_Last; //总角度值
+    float Total_Angle_Speed_RPM; //总角度值速度
+    uint32_t Total_Angle_DWT_Count;
+	float Speed_RPM;        //转速[RPM]
+	float Torque;           //力矩[电流]
     int8_t Temperature;     //电机温度
+	uint16_t Ticker;        //收到数据计时
+    uint8_t If_Online;      //是否在线  
+	uint8_t Error_ID;
 } Motor_Data_StructTypeDef;
 
 /*===| 电机数据结构体 |===*/
-extern Motor_Data_StructTypeDef Motor_Data_Struct[10];
+extern Motor_Data_StructTypeDef Motor_Data_Struct[14];
 
-
-void Motor_Init(void);
-
-void Motor_DJI_SendCurrent(FDCAN_HandleTypeDef *hfdcan, uint16_t CAN_ID, int16_t ID1_Currnet, int16_t ID2_Currnet, int16_t ID3_Currnet, int16_t ID4_Currnet);
-
-void Motor_DJI_Storage_Data(uint8_t *Data, Motor_Data_StructTypeDef *M2006_FeedbackData_StructTypeDef);
-
-/*===| 达妙相关驱动 |===*/
-#define P_MIN   -12.5
-#define P_MAX   12.5 
-#define V_MIN   -30  
-#define V_MAX   30   
-#define KP_MIN  0    
-#define KP_MAX  500  
-#define KD_MIN  0    
-#define KD_MAX  5    
-#define T_MIN   -10
-#define T_MAX   10  
-
-
-void Motor_DM_CMD_Enable(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID);
-
-void Motor_DM_CMD_Disable(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID);
-
-void Motor_DM_CMD_SetZero(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID);
-
-void Motor_DM_CMD_ClearErr(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID);
-    
-void Motor_DM_CMD_MIT(FDCAN_HandleTypeDef* hfdcan,uint16_t CAN_ID, float _pos, float _vel,float _KP, float _KD, float _torq);
-
-void Motor_DM_CMD_Position(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID, float Position, float Speed);
-
-void Motor_DM_CMD_Speed(FDCAN_HandleTypeDef* hfdcan, uint16_t CAN_ID, float Speed);
-
-void Motor_DM_Storage_Data(uint8_t *Data, Motor_Data_StructTypeDef *Motor_Data_StructTypeDef);
-
-
-float DM_uint_to_float(int x_int, float x_min, float x_max, int bits);
-int DM_float_to_uint(float x, float x_min, float x_max, int bits);
-  
-typedef __PACKED_STRUCT
-{
-    int16_t HEAD;
-    int8_t ID:4;
-    int8_t STATUS:3;
-    int8_t None:1;
-    int16_t Touque;
-    int16_t Speed;
-    int32_t Position;
-    int16_t Kp;
-    int16_t Kd;
-    uint16_t CRC16;
-} Unitree_6010_Control_StructTypedef;
-
-void Unitree_6010_Send_Control_Data(UART_HandleTypeDef *huart, uint8_t ID, float Position, float Speed, float Torque, float Kp, float Kd);
+void Get_TotalAngle_Speed(Motor_Data_StructTypeDef *Motor_Data_Struct);
 
 #endif

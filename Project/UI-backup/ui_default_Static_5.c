@@ -21,12 +21,12 @@ void _ui_init_default_Static_5() {
     ui_default_Static_5.option.figure_tpye = 7;
     ui_default_Static_5.option.layer = 0;
     ui_default_Static_5.option.font_size = 20;
-    ui_default_Static_5.option.start_x = 1708;
+    ui_default_Static_5.option.start_x = 1704;
     ui_default_Static_5.option.start_y = 450 - 80;
     ui_default_Static_5.option.color = 6;
     ui_default_Static_5.option.str_length = 8;
     ui_default_Static_5.option.width = 2;
-    strcpy(ui_default_Static_Kawshiro->string, "Kawshiro");
+    strcpy(ui_default_Static_Kawshiro->string, "Kawashiro");
 
     ui_proc_string_frame(&ui_default_Static_5);
     SEND_MESSAGE((uint8_t *) &ui_default_Static_5, sizeof(ui_default_Static_5));

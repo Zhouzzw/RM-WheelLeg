@@ -13,6 +13,10 @@ typedef enum
     Buzzer_SoundEffect_SystemStart,
     Buzzer_SoundEffect_SuperCap_ON,
     Buzzer_SoundEffect_SuperCap_OFF,
+    Buzzer_SoundEffect_Aim_ON,
+    Buzzer_SoundEffect_Aim_OFF,
+	Buzzer_SoundEffect_SetZero_Start,
+	Buzzer_SoundEffect_SetZero_Done,
 } Buzzer_SoundEffect_EnumTypedef;
 
 /*===| 蜂鸣器音调枚举定义 |===*/

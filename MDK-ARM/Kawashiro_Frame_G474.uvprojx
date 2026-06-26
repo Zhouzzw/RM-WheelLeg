@@ -10,14 +10,13 @@
       <TargetName>Kawashiro_Frame_G474</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6210000::V6.21::ARMCLANG</pArmCC>
-      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
+      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32G474VETx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32G4xx_DFP.1.6.0</PackID>
+          <PackID>Keil.STM32G4xx_DFP.2.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2001FFFF) IROM(0x8000000-0x807FFFF) CLOCK(8000000) FPU2 CPUTYPE("Cortex-M4") TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -53,10 +52,10 @@
           <OutputName>Kawashiro_Frame_G474</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>D:\14356\</ListingPath>
+          <ListingPath>.\Kawashiro_Frame_G474\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -138,7 +137,7 @@
             <DriverSelection>4101</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2V8M.DLL</Flash2>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -164,7 +163,7 @@
             <AdsACrf>1</AdsACrf>
             <AdsANop>0</AdsANop>
             <AdsANot>0</AdsANot>
-            <AdsLLst>1</AdsLLst>
+            <AdsLLst>0</AdsLLst>
             <AdsLmap>1</AdsLmap>
             <AdsLcgr>1</AdsLcgr>
             <AdsLsym>1</AdsLsym>
@@ -359,11 +358,11 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -372,7 +371,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>stm32g474xx_flash.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -930,6 +929,11 @@
           <GroupName>Robot_Application</GroupName>
           <Files>
             <File>
+              <FileName>Gimbal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Robot_Application\Gimbal.c</FilePath>
+            </File>
+            <File>
               <FileName>Chassis.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Project\Robot_Application\Chassis.c</FilePath>
@@ -940,9 +944,9 @@
               <FilePath>..\Project\Robot_Application\Communicate.c</FilePath>
             </File>
             <File>
-              <FileName>Gimbal.c</FileName>
+              <FileName>Shoot.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Project\Robot_Application\Gimbal.c</FilePath>
+              <FilePath>..\Project\Robot_Application\Shoot.c</FilePath>
             </File>
             <File>
               <FileName>INS.c</FileName>
@@ -955,9 +959,9 @@
               <FilePath>..\Project\Robot_Application\RoboControl.c</FilePath>
             </File>
             <File>
-              <FileName>Shoot.c</FileName>
+              <FileName>Aim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Project\Robot_Application\Shoot.c</FilePath>
+              <FilePath>..\Project\Robot_Application\Aim.c</FilePath>
             </File>
             <File>
               <FileName>Key_LED.c</FileName>
@@ -995,11 +999,6 @@
           <GroupName>Hardware_Drivers</GroupName>
           <Files>
             <File>
-              <FileName>Motor_Driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\Hardware_Drivers\Motor_Driver.c</FilePath>
-            </File>
-            <File>
               <FileName>Referee_Unpack.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Project\Hardware_Drivers\Referee_Unpack.c</FilePath>
@@ -1013,6 +1012,31 @@
               <FileName>SuperCap_Driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Project\Hardware_Drivers\SuperCap_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_DJI_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Hardware_Drivers\Motor_DJI_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_DAMIAO_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Hardware_Drivers\Motor_DAMIAO_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_Unitree_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Hardware_Drivers\Motor_Unitree_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Hardware_Drivers\Motor_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Laser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\Hardware_Drivers\Laser.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1104,6 +1128,11 @@
               <FileType>1</FileType>
               <FilePath>..\Project\BSP\LED.c</FilePath>
             </File>
+            <File>
+              <FileName>Flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Project\BSP\Flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1120,89 +1149,9 @@
               <FilePath>..\Project\UI\ui_interface.c</FilePath>
             </File>
             <File>
-              <FileName>ui_default_Dynamic_0.c</FileName>
+              <FileName>ui_g.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Dynamic_0.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Dynamic_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Dynamic_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_0.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_1.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_2.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_3.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_4.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_5.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_7.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_7.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_8.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_8.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_9.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_9.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_10.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_10.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_11.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_11.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_12.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_12.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_13.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_13.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_default_Static_14.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Project\UI\ui_default_Static_14.c</FilePath>
+              <FilePath>..\Project\UI\ui_g.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1219,6 +1168,16 @@
         <Group>
           <GroupName>Drivers/STM32G4xx_HAL_Driver</GroupName>
           <Files>
+            <File>
+              <FileName>stm32g4xx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32g4xx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.c</FilePath>
+            </File>
             <File>
               <FileName>stm32g4xx_hal_pcd.c</FileName>
               <FileType>1</FileType>
@@ -1929,16 +1888,6 @@
               <FileName>stm32g4xx_hal_spi_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32g4xx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32g4xx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32g4xx_hal_uart.c</FileName>

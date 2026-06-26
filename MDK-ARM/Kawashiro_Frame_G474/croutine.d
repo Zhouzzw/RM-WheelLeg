@@ -1,8 +1,6 @@
 ./kawashiro_frame_g474/croutine.o: \
   ..\Middlewares\Third_Party\FreeRTOS\Source\croutine.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stddef.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdint.h \
   ..\Core\Inc\FreeRTOSConfig.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \

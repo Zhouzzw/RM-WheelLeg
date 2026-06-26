@@ -15,6 +15,7 @@
 void PID_Position_Calculate(PID_Struct_TypeDef *PID_Struct, float Target, float Feedback)
 { 
     /*===| 赋值 |===*/
+	 PID_Struct->Target = PID_Struct->Targer_LowPass_K * Target + (1 - PID_Struct->Targer_LowPass_K) * PID_Struct->Target_Last;
     PID_Struct->Target = Target;
     PID_Struct->Feedback = Feedback;
     
@@ -25,7 +26,7 @@ void PID_Position_Calculate(PID_Struct_TypeDef *PID_Struct, float Target, float 
     PID_Struct->K_Output =  PID_Struct->Kp * PID_Struct->Error;
     PID_Struct->I_Output += PID_Struct->Ki * PID_Struct->Error * DWT_GetDeltaT(&PID_Struct->DWT_Count) * 1000.0f;   //Ki->每1的误差每1msI累积量
     PID_Struct->D_Output =  PID_Struct->Kd * (PID_Struct->Error - PID_Struct->Error_Last);
-    PID_Struct->F_Output =  PID_Struct->Kf * (PID_Struct->Target - PID_Struct->Target_Last);
+    PID_Struct->F_Output =  PID_Struct->Kf * PID_Struct->Target;
     
 	/*===| 积分输出限幅 |===*/
 	if(PID_Struct->I_Output >  PID_Struct->I_Output_Max && PID_Struct->I_Output_Max != 0)	PID_Struct->I_Output =  PID_Struct->I_Output_Max;
@@ -80,5 +81,6 @@ void PID_Init(PID_Struct_TypeDef *PID_Struct, float Kp, float Ki, float Kd, floa
     PID_Struct->Kf = Kf;
     PID_Struct->I_Output_Max = I_Output_Max;
     PID_Struct->Output_Max = Output_Max;
+	PID_Struct->Targer_LowPass_K = 1;
 }
 

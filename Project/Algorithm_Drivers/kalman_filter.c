@@ -248,7 +248,7 @@ void Kalman_Filter_Init(KalmanFilter_t *kf, uint8_t xhatSize, uint8_t uSize, uin
     kf->temp_matrix_data1 = (float *)user_malloc(sizeof_float * kf->xhatSize * kf->xhatSize);
     kf->temp_vector_data = (float *)user_malloc(sizeof_float * kf->xhatSize);
     kf->temp_vector_data1 = (float *)user_malloc(sizeof_float * kf->xhatSize);
-    Matrix_Init(&kf->S, kf->xhatSize, kf->xhatSize, (float *)kf->S_data);
+    Matrix_Init(&kf->S1, kf->xhatSize, kf->xhatSize, (float *)kf->S_data);
     Matrix_Init(&kf->temp_matrix, kf->xhatSize, kf->xhatSize, (float *)kf->temp_matrix_data);
     Matrix_Init(&kf->temp_matrix1, kf->xhatSize, kf->xhatSize, (float *)kf->temp_matrix_data1);
     Matrix_Init(&kf->temp_vector, kf->xhatSize, 1, (float *)kf->temp_vector_data);
@@ -320,10 +320,10 @@ void Kalman_Filter_SetK(KalmanFilter_t *kf)
         kf->temp_matrix1.numRows = kf->temp_matrix.numRows;
         kf->temp_matrix1.numCols = kf->HT.numCols;
         kf->MatStatus = Matrix_Multiply(&kf->temp_matrix, &kf->HT, &kf->temp_matrix1); // temp_matrix1 = H·P'(k)·HT
-        kf->S.numRows = kf->R.numRows;
-        kf->S.numCols = kf->R.numCols;
-        kf->MatStatus = Matrix_Add(&kf->temp_matrix1, &kf->R, &kf->S); // S = H P'(k) HT + R
-        kf->MatStatus = Matrix_Inverse(&kf->S, &kf->temp_matrix1);     // temp_matrix1 = inv(H·P'(k)·HT + R)
+        kf->S1.numRows = kf->R.numRows;
+        kf->S1.numCols = kf->R.numCols;
+        kf->MatStatus = Matrix_Add(&kf->temp_matrix1, &kf->R, &kf->S1); // S = H P'(k) HT + R
+        kf->MatStatus = Matrix_Inverse(&kf->S1, &kf->temp_matrix1);     // temp_matrix1 = inv(H·P'(k)·HT + R)
         kf->temp_matrix.numRows = kf->Pminus.numRows;
         kf->temp_matrix.numCols = kf->HT.numCols;
         kf->MatStatus = Matrix_Multiply(&kf->Pminus, &kf->HT, &kf->temp_matrix); // temp_matrix = P'(k)·HT

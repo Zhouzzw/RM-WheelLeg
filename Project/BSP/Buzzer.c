@@ -68,7 +68,43 @@ void Buzzer_Task(void const *argument)
                 Buzzer_Set_Tone(M1); osDelay(200);
                 Buzzer_SoundEffect = Buzzer_SoundEffect_OFF;
                 break;
-            }              
+            }   
+            case Buzzer_SoundEffect_Aim_ON:
+            {
+                Buzzer_Start();
+                Buzzer_Set_Tone(M7); osDelay(50); Buzzer_Set_Tone(P); osDelay(150);
+                Buzzer_Set_Tone(M7); osDelay(50); Buzzer_Set_Tone(P); osDelay(150);
+                Buzzer_Set_Tone(M7); osDelay(50); Buzzer_Set_Tone(P); osDelay(150);
+                Buzzer_SoundEffect = Buzzer_SoundEffect_OFF;
+                break;
+            }  
+            case Buzzer_SoundEffect_Aim_OFF:
+            {
+                Buzzer_Start();
+                Buzzer_Set_Tone(M7); osDelay(200);
+                Buzzer_Set_Tone(M5); osDelay(200);
+                Buzzer_Set_Tone(M3); osDelay(200);
+                Buzzer_SoundEffect = Buzzer_SoundEffect_OFF;
+                break;
+            }
+			case Buzzer_SoundEffect_SetZero_Start:
+            {
+                Buzzer_Start();
+                Buzzer_Set_Tone(H2); osDelay(200);
+                Buzzer_Set_Tone(H1); osDelay(200);
+                Buzzer_Set_Tone(H6); osDelay(200);
+                Buzzer_SoundEffect = Buzzer_SoundEffect_OFF;
+                break;
+            }
+			case Buzzer_SoundEffect_SetZero_Done:
+            {
+                Buzzer_Start();
+                Buzzer_Set_Tone(H6); osDelay(200);
+                Buzzer_Set_Tone(H1); osDelay(200);
+                Buzzer_Set_Tone(H2); osDelay(200);
+                Buzzer_SoundEffect = Buzzer_SoundEffect_OFF;
+                break;
+            }			
         }
         
 		osDelay(BUZZER_TASK_CONTROL_TIME);

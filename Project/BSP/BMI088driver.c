@@ -117,6 +117,7 @@ void BMI088_Init(SPI_HandleTypeDef *bmi088_SPI, uint8_t calibrate)
     }
 }
 
+float OFFSET_Data[5] = {0};
 uint8_t BMI088_init(SPI_HandleTypeDef *bmi088_SPI, uint8_t calibrate)
 {
     BMI088_SPI = bmi088_SPI;
@@ -124,14 +125,32 @@ uint8_t BMI088_init(SPI_HandleTypeDef *bmi088_SPI, uint8_t calibrate)
 
     error |= bmi088_accel_init();
     error |= bmi088_gyro_init();
-    if (calibrate)
-        Calibrate_MPU_Offset(&BMI088);
+    
+    memcpy(OFFSET_Data, (void *)(0x0807F800), 20);
+
+    if(OFFSET_Data[0] != 1.0f && calibrate == 1)
+    {
+        Calibrate_MPU_Offset(&BMI088); 
+        
+        OFFSET_Data[0] = 1.0f;
+        OFFSET_Data[1] = BMI088.GyroOffset[0];
+        OFFSET_Data[2] = BMI088.GyroOffset[1];
+        OFFSET_Data[3] = BMI088.GyroOffset[2];
+        OFFSET_Data[4] = BMI088.gNorm;  
+        BMI088.AccelScale = 9.81f / BMI088.gNorm;
+        BMI088.TempWhenCali = 40;       
+        
+        FLASH_ErasePage(127);
+        FLASH_programword(0x0807F800, ((uint64_t *)(OFFSET_Data))[0]);
+        FLASH_programword(0x0807F808, ((uint64_t *)(OFFSET_Data))[1]);
+        FLASH_programword(0x0807F810, ((uint64_t *)(OFFSET_Data))[2]);
+    }
     else
     {
-        BMI088.GyroOffset[0] = GxOFFSET;
-        BMI088.GyroOffset[1] = GyOFFSET;
-        BMI088.GyroOffset[2] = GzOFFSET;
-        BMI088.gNorm = gNORM;
+        BMI088.GyroOffset[0] = OFFSET_Data[1];
+        BMI088.GyroOffset[1] = OFFSET_Data[2];
+        BMI088.GyroOffset[2] = OFFSET_Data[3];
+        BMI088.gNorm         = OFFSET_Data[4];
         BMI088.AccelScale = 9.81f / BMI088.gNorm;
         BMI088.TempWhenCali = 40;
     }
@@ -143,7 +162,7 @@ uint8_t BMI088_init(SPI_HandleTypeDef *bmi088_SPI, uint8_t calibrate)
 void Calibrate_MPU_Offset(IMU_Data_t *bmi088)
 {
     static float startTime;
-    static uint16_t CaliTimes = 4000; // 需要足够多的数据才能得到有效陀螺仪零偏校准结果
+    static uint16_t CaliTimes = 10000; // 需要足够多的数据才能得到有效陀螺仪零偏校准结果
     uint8_t buf[8] = {0, 0, 0, 0, 0, 0};
     int16_t bmi088_raw_temp;
     float gyroMax[3], gyroMin[3];

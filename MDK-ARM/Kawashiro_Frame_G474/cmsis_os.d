@@ -1,10 +1,7 @@
 ./kawashiro_frame_g474/cmsis_os.o: \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\string.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stddef.h \
-  E:\Embeded\Keil_v5\ARM\ARMCLANG\include\stdint.h \
   ..\Core\Inc\FreeRTOSConfig.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
