@@ -206,12 +206,12 @@ void Gimbal_Task(void *argument)
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		K1=-LQR_K_L[6]*Chassis_Control_Struct.State[1];
-		K2=-LQR_K_L[7]*Chassis_Control_Struct.State[2];
-		K3=-LQR_K_L[8]*Chassis_Control_Struct.State[3];
-		K4=-LQR_K_L[9]*Chassis_Control_Struct.State[4];
-		K5=-LQR_K_L[10]*Chassis_Control_Struct.State[5];
-		K6=-LQR_K_L[11]*Chassis_Control_Struct.State[6];
+		// K1=-LQR_K_L[6]*Chassis_Control_Struct.State[1];
+		// K2=-LQR_K_L[7]*Chassis_Control_Struct.State[2];
+		// K3=-LQR_K_L[8]*Chassis_Control_Struct.State[3];
+		// K4=-LQR_K_L[9]*Chassis_Control_Struct.State[4];
+		// K5=-LQR_K_L[10]*Chassis_Control_Struct.State[5];
+		// K6=-LQR_K_L[11]*Chassis_Control_Struct.State[6];
 		
 //		UART4_Printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",K1,K2,K3,K4,K5,K6,Chassis_Control_Struct.Torque_Joint_left,Chassis_Control_Struct.Torque_wheel_left,Chassis_Control_Struct.Chassis_Vy_Target,Chassis_Control_Struct.Volecity_Fdb,Chassis_Control_Struct.Target_displacement,Chassis_Control_Struct.displacement);
 		
