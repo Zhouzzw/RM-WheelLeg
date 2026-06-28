@@ -10,32 +10,32 @@ void Key_Scan_Task(void) //10ms
     
     for(uint8_t i = 0; i < 3; i++)
     {
-        if(Key_Data[i].Pin_Now == 0 && Key_Data[i].Pin_Last == 1)
-        {
-            //按下瞬间
-            Key_Data[i].Push_Time = 0;
-            Key_Data[i].Release_Time = 0;
-        }
-        if(Key_Data[i].Pin_Now == 0 && Key_Data[i].Pin_Last == 0)
-        {
-            //持续按下
-            Key_Data[i].Push_Time++;
-            Limit_int(&Key_Data[i].Push_Time, 110, 0);
-        }
-        if(Key_Data[i].Pin_Now == 1 && Key_Data[i].Pin_Last == 0)
-        {
-            //松开瞬间
-            if(Key_Data[i].Push_Time >= 100) Key_Data[i].State = LongPush;
-            else Key_Data[i].State = ShortPush;
-        }
-        if(Key_Data[i].Pin_Now == 1 && Key_Data[i].Pin_Last == 1)
-        {
-            //持续松开
-            Key_Data[i].Release_Time++;
-            Limit_int(&Key_Data[i].Release_Time, 100, 0);
-            if(Key_Data[i].Release_Time >= 50)
-                Key_Data[i].State = Release;
-        }
+        // if(Key_Data[i].Pin_Now == 0 && Key_Data[i].Pin_Last == 1)
+        // {
+        //     //按下瞬间
+        //     Key_Data[i].Push_Time = 0;
+        //     Key_Data[i].Release_Time = 0;
+        // }
+        // if(Key_Data[i].Pin_Now == 0 && Key_Data[i].Pin_Last == 0)
+        // {
+        //     //持续按下
+        //     Key_Data[i].Push_Time++;
+        //     Limit_int(&Key_Data[i].Push_Time, 110, 0);
+        // }
+        // if(Key_Data[i].Pin_Now == 1 && Key_Data[i].Pin_Last == 0)
+        // {
+        //     //松开瞬间
+        //     if(Key_Data[i].Push_Time >= 100) Key_Data[i].State = LongPush;
+        //     else Key_Data[i].State = ShortPush;
+        // }
+        // if(Key_Data[i].Pin_Now == 1 && Key_Data[i].Pin_Last == 1)
+        // {
+        //     //持续松开
+        //     Key_Data[i].Release_Time++;
+        //     Limit_int(&Key_Data[i].Release_Time, 100, 0);
+        //     if(Key_Data[i].Release_Time >= 50)
+        //         Key_Data[i].State = Release;
+        // }
 		
 		Key_Data[i].Pin_Last = Key_Data[i].Pin_Now;
     }

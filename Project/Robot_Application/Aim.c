@@ -29,17 +29,17 @@ void Aim_Task(void const * argument)
     for(;;)
     {
         /*===| 统计平均弹速 |===*/
-        Get_Average_Bullet_Speed();
+        // Get_Average_Bullet_Speed();
         
-        Aim_Send_Struct.bullet_speed = Bullet_Speed_Average;
-        if(Robo_State.robot_id < 100) Aim_Send_Struct.detect_color = 1;
-        else Aim_Send_Struct.detect_color = 0;
-        Aim_Send_Struct.yaw = INS_Data_Gimbal.Yaw;
-        Aim_Send_Struct.roll = INS_Data_Gimbal.Roll;
-        Aim_Send_Struct.pitch = INS_Data_Gimbal.Pitch;
-        Aim_Send_Struct.time_stamp += DWT_GetDeltaT(&Aim_DWT_Count) * 1000000;
+        // Aim_Send_Struct.bullet_speed = Bullet_Speed_Average;
+        // if(Robo_State.robot_id < 100) Aim_Send_Struct.detect_color = 1;
+        // else Aim_Send_Struct.detect_color = 0;
+        // Aim_Send_Struct.yaw = INS_Data_Gimbal.Yaw;
+        // Aim_Send_Struct.roll = INS_Data_Gimbal.Roll;
+        // Aim_Send_Struct.pitch = INS_Data_Gimbal.Pitch;
+        // Aim_Send_Struct.time_stamp += DWT_GetDeltaT(&Aim_DWT_Count) * 1000000;
         
-        Aim_Send_Struct.Check_SUM = 0;
+        // Aim_Send_Struct.Check_SUM = 0;
         
 //        for(uint8_t i = 0; i < sizeof(Aim_Send_StructTypedef) - 2; i++)
 //        {
