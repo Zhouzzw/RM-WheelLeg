@@ -62,44 +62,44 @@ void HSVtoRGB(uint16_t h, uint16_t s, uint16_t v)
     float RGB_max = v * 2.55f;
     float RGB_min = RGB_max * (100 - s) / 100.0f;
     float RGB_Adj = (RGB_max - RGB_min) * difs / 60.0f; 
-    switch(i)
-    {
-    case 0:
-        R_Color = RGB_max;
-        G_Color = RGB_min + RGB_Adj;
-        B_Color = RGB_min;
-        break;
+    // switch(i)
+    // {
+    // case 0:
+    //     R_Color = RGB_max;
+    //     G_Color = RGB_min + RGB_Adj;
+    //     B_Color = RGB_min;
+    //     break;
 
-    case 1:
-        R_Color = RGB_max - RGB_Adj;
-        G_Color = RGB_max;
-        B_Color = RGB_min;
-        break;
+    // case 1:
+    //     R_Color = RGB_max - RGB_Adj;
+    //     G_Color = RGB_max;
+    //     B_Color = RGB_min;
+    //     break;
 
-    case 2:
-        R_Color = RGB_min;
-        G_Color = RGB_max;
-        B_Color = RGB_min + RGB_Adj;
-        break;
+    // case 2:
+    //     R_Color = RGB_min;
+    //     G_Color = RGB_max;
+    //     B_Color = RGB_min + RGB_Adj;
+    //     break;
 
-    case 3:
-        R_Color = RGB_min;
-        G_Color = RGB_max - RGB_Adj;
-        B_Color = RGB_max;
-        break;
+    // case 3:
+    //     R_Color = RGB_min;
+    //     G_Color = RGB_max - RGB_Adj;
+    //     B_Color = RGB_max;
+    //     break;
 
-    case 4:
-        R_Color = RGB_min + RGB_Adj;
-        G_Color = RGB_min;
-        B_Color = RGB_max;
-        break;
+    // case 4:
+    //     R_Color = RGB_min + RGB_Adj;
+    //     G_Color = RGB_min;
+    //     B_Color = RGB_max;
+    //     break;
 
-    default:
-        R_Color = RGB_max;
-        G_Color = RGB_min;
-        B_Color = RGB_max - RGB_Adj;
-        break;
-    }
+    // default:
+    //     R_Color = RGB_max;
+    //     G_Color = RGB_min;
+    //     B_Color = RGB_max - RGB_Adj;
+    //     break;
+    // }
 }
 
 
